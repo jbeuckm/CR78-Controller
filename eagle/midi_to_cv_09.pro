@@ -1,13 +1,13 @@
 EAGLE AutoRouter Statistics:
 
-Job           : /Users/joebeuckman/Dropbox/CAM/eurorack/atmega_midi_cv_drums/eagle/midi_to_cv.brd
+Job           : /Users/joebeuckman/Dropbox/CAM/eurorack/CR78-Controller/eagle/midi_to_cv.brd
 
-Start at      : 21:58:16 (3/18/16)
-End at        : 22:02:13 (3/18/16)
+Start at      : 21:04:22 (6/5/16)
+End at        : 21:09:28 (6/5/16)
 Elapsed time  : 00:00:00
 
-Signals       :    70   RoutingGrid: 12.5 mil  Layers: 1
-Connections   :   147   predefined:  78 ( 10 Vias )
+Signals       :    46   RoutingGrid: 12.5 mil  Layers: 1
+Connections   :   147   predefined:  0 ( 0 Vias )
 
 Router memory :   0
 
@@ -22,6 +22,6 @@ max. Total        :         0
 
 Routed            :         0
 Vias              :         0
-Resolution        :    53.1 %
+Resolution        :     0.0 %
 
 Final             : 
