@@ -15330,7 +15330,7 @@ Based on the following sources:
 <instance part="R2" gate="G$1" x="-60.96" y="63.5"/>
 <instance part="R3" gate="G$1" x="-60.96" y="50.8"/>
 <instance part="R4" gate="G$1" x="-60.96" y="38.1"/>
-<instance part="P+23" gate="1" x="-50.8" y="73.66"/>
+<instance part="P+23" gate="1" x="-53.34" y="76.2"/>
 <instance part="MIDI_THRU_1" gate="-1" x="-68.58" y="45.72" rot="R180"/>
 <instance part="MIDI_THRU_1" gate="-2" x="-68.58" y="48.26" rot="R180"/>
 <instance part="MIDI_THRU_1" gate="-3" x="-68.58" y="50.8" rot="R180"/>
@@ -15444,7 +15444,16 @@ Based on the following sources:
 <segment>
 <pinref part="MIDI_LED" gate="-1" pin="S"/>
 <pinref part="P+23" gate="1" pin="+5V"/>
-<wire x1="-50.8" y1="71.12" x2="-66.04" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="73.66" x2="-53.34" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="66.04" x2="-66.04" y2="66.04" width="0.1524" layer="91"/>
+<pinref part="R18" gate="G$1" pin="2"/>
+<wire x1="-55.88" y1="33.02" x2="-53.34" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="33.02" x2="-53.34" y2="45.72" width="0.1524" layer="91"/>
+<junction x="-53.34" y="66.04"/>
+<pinref part="R8" gate="G$1" pin="2"/>
+<wire x1="-53.34" y1="45.72" x2="-53.34" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="45.72" x2="-53.34" y2="45.72" width="0.1524" layer="91"/>
+<junction x="-53.34" y="45.72"/>
 </segment>
 </net>
 <net name="+12V" class="0">

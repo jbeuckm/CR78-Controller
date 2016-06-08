@@ -15053,7 +15053,7 @@ Based on the following sources:
 <part name="P+14" library="supply1" deviceset="+12V" device=""/>
 <part name="C6" library="rcl" deviceset="C-US" device="050-024X044" value="100n"/>
 <part name="C7" library="rcl" deviceset="C-US" device="050-024X044" value="100n"/>
-<part name="R15" library="rcl" deviceset="R-US_" device="0207/10" value="1M"/>
+<part name="R15" library="rcl" deviceset="R-US_" device="0204/7" value="1M"/>
 <part name="OK2" library="optocoupler" deviceset="6N138" device=""/>
 <part name="D2" library="SparkFun-DiscreteSemi" deviceset="DIODE" device="1N4148"/>
 <part name="R5" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>

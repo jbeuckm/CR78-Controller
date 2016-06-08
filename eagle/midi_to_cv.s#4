@@ -15149,6 +15149,7 @@ Based on the following sources:
 <part name="MIDI_THRU_2" library="con-molex" deviceset="22-23-2031" device=""/>
 <part name="R8" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>
 <part name="R18" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>
+<part name="GND26" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15339,6 +15340,7 @@ Based on the following sources:
 <instance part="MIDI_THRU_2" gate="-3" x="-68.58" y="38.1" rot="R180"/>
 <instance part="R8" gate="G$1" x="-60.96" y="45.72"/>
 <instance part="R18" gate="G$1" x="-60.96" y="33.02"/>
+<instance part="GND26" gate="1" x="-60.96" y="20.32"/>
 </instances>
 <busses>
 </busses>
@@ -15783,6 +15785,16 @@ Based on the following sources:
 <pinref part="IC1" gate="P" pin="VSS"/>
 <pinref part="GND7" gate="1" pin="GND"/>
 <wire x1="-48.26" y1="99.06" x2="-48.26" y2="101.6" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="MIDI_THRU_1" gate="-2" pin="S"/>
+<pinref part="GND26" gate="1" pin="GND"/>
+<wire x1="-66.04" y1="48.26" x2="-60.96" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="48.26" x2="-60.96" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="MIDI_THRU_2" gate="-2" pin="S"/>
+<wire x1="-60.96" y1="35.56" x2="-60.96" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="-66.04" y1="35.56" x2="-60.96" y2="35.56" width="0.1524" layer="91"/>
+<junction x="-60.96" y="35.56"/>
 </segment>
 </net>
 <net name="N$6" class="0">

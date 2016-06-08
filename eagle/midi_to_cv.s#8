@@ -15101,7 +15101,7 @@ Based on the following sources:
 <part name="MIDI_LED" library="con-molex" deviceset="22-23-2021" device=""/>
 <part name="P+4" library="supply1" deviceset="+5V" device=""/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
-<part name="R2" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>
+<part name="R2" library="rcl" deviceset="R-US_" device="0204/7" value="330"/>
 <part name="R3" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>
 <part name="R4" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>
 <part name="P+23" library="supply1" deviceset="+5V" device=""/>
