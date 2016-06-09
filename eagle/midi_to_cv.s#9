@@ -15147,6 +15147,9 @@ Based on the following sources:
 <part name="P+23" library="supply1" deviceset="+5V" device=""/>
 <part name="MIDI_THRU_1" library="con-molex" deviceset="22-23-2031" device=""/>
 <part name="MIDI_THRU_2" library="con-molex" deviceset="22-23-2031" device=""/>
+<part name="R8" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>
+<part name="R18" library="rcl" deviceset="R-US_" device="0204/7" value="220"/>
+<part name="GND26" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15320,21 +15323,24 @@ Based on the following sources:
 <instance part="IC1" gate="B" x="-43.18" y="63.5" rot="R180"/>
 <instance part="IC1" gate="C" x="-43.18" y="50.8" rot="MR0"/>
 <instance part="IC1" gate="P" x="-48.26" y="109.22"/>
-<instance part="MIDI_LED" gate="-1" x="-63.5" y="66.04" rot="MR0"/>
-<instance part="MIDI_LED" gate="-2" x="-63.5" y="63.5" rot="MR0"/>
+<instance part="MIDI_LED" gate="-1" x="-68.58" y="66.04" rot="MR0"/>
+<instance part="MIDI_LED" gate="-2" x="-68.58" y="63.5" rot="MR0"/>
 <instance part="P+4" gate="1" x="-48.26" y="121.92"/>
 <instance part="GND7" gate="1" x="-48.26" y="96.52"/>
 <instance part="IC1" gate="D" x="-43.18" y="38.1" rot="R180"/>
-<instance part="R2" gate="G$1" x="-55.88" y="63.5"/>
-<instance part="R3" gate="G$1" x="-55.88" y="50.8"/>
-<instance part="R4" gate="G$1" x="-55.88" y="38.1"/>
-<instance part="P+23" gate="1" x="-60.96" y="81.28"/>
-<instance part="MIDI_THRU_1" gate="-1" x="-63.5" y="45.72" rot="R180"/>
-<instance part="MIDI_THRU_1" gate="-2" x="-63.5" y="48.26" rot="R180"/>
-<instance part="MIDI_THRU_1" gate="-3" x="-63.5" y="50.8" rot="R180"/>
-<instance part="MIDI_THRU_2" gate="-1" x="-63.5" y="33.02" rot="R180"/>
-<instance part="MIDI_THRU_2" gate="-2" x="-63.5" y="35.56" rot="R180"/>
-<instance part="MIDI_THRU_2" gate="-3" x="-63.5" y="38.1" rot="R180"/>
+<instance part="R2" gate="G$1" x="-60.96" y="63.5"/>
+<instance part="R3" gate="G$1" x="-60.96" y="50.8"/>
+<instance part="R4" gate="G$1" x="-60.96" y="38.1"/>
+<instance part="P+23" gate="1" x="-53.34" y="76.2"/>
+<instance part="MIDI_THRU_1" gate="-1" x="-68.58" y="45.72" rot="R180"/>
+<instance part="MIDI_THRU_1" gate="-2" x="-68.58" y="48.26" rot="R180"/>
+<instance part="MIDI_THRU_1" gate="-3" x="-68.58" y="50.8" rot="R180"/>
+<instance part="MIDI_THRU_2" gate="-1" x="-68.58" y="33.02" rot="R180"/>
+<instance part="MIDI_THRU_2" gate="-2" x="-68.58" y="35.56" rot="R180"/>
+<instance part="MIDI_THRU_2" gate="-3" x="-68.58" y="38.1" rot="R180"/>
+<instance part="R8" gate="G$1" x="-60.96" y="45.72"/>
+<instance part="R18" gate="G$1" x="-60.96" y="33.02"/>
+<instance part="GND26" gate="1" x="-60.96" y="20.32"/>
 </instances>
 <busses>
 </busses>
@@ -15440,7 +15446,16 @@ Based on the following sources:
 <segment>
 <pinref part="MIDI_LED" gate="-1" pin="S"/>
 <pinref part="P+23" gate="1" pin="+5V"/>
-<wire x1="-60.96" y1="78.74" x2="-60.96" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="73.66" x2="-53.34" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="66.04" x2="-66.04" y2="66.04" width="0.1524" layer="91"/>
+<pinref part="R18" gate="G$1" pin="2"/>
+<wire x1="-55.88" y1="33.02" x2="-53.34" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="33.02" x2="-53.34" y2="45.72" width="0.1524" layer="91"/>
+<junction x="-53.34" y="66.04"/>
+<pinref part="R8" gate="G$1" pin="2"/>
+<wire x1="-53.34" y1="45.72" x2="-53.34" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="45.72" x2="-53.34" y2="45.72" width="0.1524" layer="91"/>
+<junction x="-53.34" y="45.72"/>
 </segment>
 </net>
 <net name="+12V" class="0">
@@ -15770,6 +15785,16 @@ Based on the following sources:
 <pinref part="IC1" gate="P" pin="VSS"/>
 <pinref part="GND7" gate="1" pin="GND"/>
 <wire x1="-48.26" y1="99.06" x2="-48.26" y2="101.6" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="MIDI_THRU_1" gate="-2" pin="S"/>
+<pinref part="GND26" gate="1" pin="GND"/>
+<wire x1="-66.04" y1="48.26" x2="-60.96" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="48.26" x2="-60.96" y2="35.56" width="0.1524" layer="91"/>
+<pinref part="MIDI_THRU_2" gate="-2" pin="S"/>
+<wire x1="-60.96" y1="35.56" x2="-60.96" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="-66.04" y1="35.56" x2="-60.96" y2="35.56" width="0.1524" layer="91"/>
+<junction x="-60.96" y="35.56"/>
 </segment>
 </net>
 <net name="N$6" class="0">
@@ -16226,18 +16251,21 @@ Based on the following sources:
 <segment>
 <pinref part="IC1" gate="B" pin="O"/>
 <pinref part="R2" gate="G$1" pin="2"/>
+<wire x1="-55.88" y1="63.5" x2="-50.8" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$27" class="0">
 <segment>
 <pinref part="IC1" gate="C" pin="O"/>
 <pinref part="R3" gate="G$1" pin="2"/>
+<wire x1="-55.88" y1="50.8" x2="-50.8" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$28" class="0">
 <segment>
 <pinref part="IC1" gate="D" pin="O"/>
 <pinref part="R4" gate="G$1" pin="2"/>
+<wire x1="-55.88" y1="38.1" x2="-50.8" y2="38.1" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$30" class="0">
@@ -16286,6 +16314,18 @@ Based on the following sources:
 <segment>
 <pinref part="R4" gate="G$1" pin="1"/>
 <pinref part="MIDI_THRU_2" gate="-3" pin="S"/>
+</segment>
+</net>
+<net name="N$20" class="0">
+<segment>
+<pinref part="MIDI_THRU_1" gate="-1" pin="S"/>
+<pinref part="R8" gate="G$1" pin="1"/>
+</segment>
+</net>
+<net name="N$35" class="0">
+<segment>
+<pinref part="MIDI_THRU_2" gate="-1" pin="S"/>
+<pinref part="R18" gate="G$1" pin="1"/>
 </segment>
 </net>
 </nets>
