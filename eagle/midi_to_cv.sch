@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.6.0">
+<eagle version="7.1.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -15069,10 +15069,10 @@ Based on the following sources:
 <part name="P+5" library="supply1" deviceset="+12V" device=""/>
 <part name="R7" library="rcl" deviceset="R-US_" device="0204/7" value="1M"/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
-<part name="R9" library="rcl" deviceset="R-US_" device="0204/7" value="68k"/>
-<part name="C8" library="rcl" deviceset="C-US" device="025-040X050" value="470pF"/>
+<part name="R9" library="rcl" deviceset="R-US_" device="0204/7" value="100k"/>
+<part name="C8" library="rcl" deviceset="C-US" device="025-040X050" value="10n"/>
 <part name="Q4" library="808_lt" deviceset="2N3904" device=""/>
-<part name="R10" library="rcl" deviceset="R-US_" device="0204/7" value="1M5"/>
+<part name="R10" library="rcl" deviceset="R-US_" device="0204/7" value="2M2"/>
 <part name="Q5" library="808_lt" deviceset="2N3904" device=""/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="P+7" library="supply1" deviceset="+12V" device=""/>

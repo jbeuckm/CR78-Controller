@@ -15077,7 +15077,7 @@ Based on the following sources:
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="P+7" library="supply1" deviceset="+12V" device=""/>
 <part name="R11" library="rcl" deviceset="R-US_" device="0204/7" value="15k"/>
-<part name="R12" library="rcl" deviceset="R-US_" device="0207/12" value="47k"/>
+<part name="R12" library="rcl" deviceset="R-US_" device="0204/7" value="47k"/>
 <part name="C9" library="rcl" deviceset="C-US" device="050-025X075" value="18p"/>
 <part name="R13" library="rcl" deviceset="R-US_" device="0204/7" value="100k"/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
