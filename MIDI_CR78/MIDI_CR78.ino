@@ -35,6 +35,7 @@ byte voice_gates[] = {0, 0, 0, 0,
 
 byte cy_kill_gate = 0;
 byte tb_kill_gate = 0;
+byte accent_gate = 0;
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
@@ -42,18 +43,22 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 
 void handleNoteOn(byte channel, byte pitch, byte velocity)
 {
-  if (pitch < 48 || pitch > 63) return;
+  if (pitch < 60 || pitch > 75) return;
 
-  int voice = pitch - 48;
+  byte voice = pitch - 60;
 
   voice_gates[voice] = 3;
+
+  if (velocity > 100) {
+    accent_gate = 250;
+  }
 }
 
 void handleNoteOff(byte channel, byte pitch, byte velocity)
 {
-  if (pitch < 48 || pitch > 63) return;
+  if (pitch < 60 || pitch > 75) return;
 
-  int voice = pitch - 48;
+  byte voice = pitch - 60;
 
   byte voice_pin = voice_map[voice];
 
@@ -97,7 +102,6 @@ ISR(TIMER1_COMPA_vect) {
       cy_kill_gate = 0;
     }    
   
-
     if (tb_kill_gate > 1) {
       digitalWrite(TB_KILL_PIN, HIGH);
       tb_kill_gate -= 1;
@@ -105,7 +109,15 @@ ISR(TIMER1_COMPA_vect) {
       digitalWrite(TB_KILL_PIN, LOW);
       tb_kill_gate = 0;
     }    
-  
+ 
+    if (accent_gate > 1) {
+      digitalWrite(ACCENT_PIN, HIGH);
+      accent_gate -= 1;
+    } else if (accent_gate == 1) {
+      digitalWrite(ACCENT_PIN, LOW);
+      accent_gate = 0;
+    }    
+ 
 }
 
 
@@ -113,8 +125,9 @@ ISR(TIMER1_COMPA_vect) {
 
 void setup()
 {
-  for (i = 0; i < sizeof(voice_map); i++) {
-    pinMode(voice_map[i], OUTPUT);
+  int j;
+  for (j = 0; j < 16; j++) {
+    pinMode(voice_map[j], OUTPUT);
   }
 
   pinMode(CY_KILL_PIN, OUTPUT);
@@ -122,6 +135,7 @@ void setup()
   pinMode(ACCENT_PIN, OUTPUT);
 
   MIDI.setHandleNoteOn(handleNoteOn);
+  MIDI.setHandleNoteOff(handleNoteOff);
 
     cli();//stop interrupts
     
