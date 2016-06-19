@@ -13,25 +13,27 @@
 #define TB_KILL_PIN 6
 #define MB_PIN A5
 
-#define GU_SLOW_PIN 12
-#define GU_FAST_PIN 13
+#define GU_STOP_PIN 12
+#define GU_SLOW_PIN 13
 
 #define CY_PIN 10
 #define HH_PIN 9
 #define M_PIN 8
 #define CY_KILL_PIN 7
 
-#define ACCENT_PIN A0 
+#define ACCENT_PIN A0
+
+#define REGULAR_PIN_COUNT 14
 
 byte voice_map[] = {BD_PIN, SD_PIN, LB_PIN, HB_PIN, 
                   LC_PIN, RS_PIN, C_PIN, CB_PIN, 
-                  TB_SHORT_PIN, TB_LONG_PIN, MB_PIN, GU_SLOW_PIN, 
-                  GU_FAST_PIN, M_PIN, HH_PIN, CY_PIN};
+                  TB_SHORT_PIN, TB_LONG_PIN, 
+                  MB_PIN, M_PIN, HH_PIN, CY_PIN};
 
 byte voice_gates[] = {0, 0, 0, 0,
                     0, 0, 0, 0,
                     0, 0, 0, 0,
-                    0, 0, 0, 0};
+                    0, 0};
 
 byte cy_kill_gate = 0;
 byte tb_kill_gate = 0;
@@ -43,39 +45,53 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 
 void handleNoteOn(byte channel, byte pitch, byte velocity)
 {
-  if (pitch < 60 || pitch > 75) return;
-
   byte voice = pitch - 60;
 
-  voice_gates[voice] = 3;
+  if (voice >= 0 && voice < REGULAR_PIN_COUNT) { 
 
-  if (velocity > 100) {
-    accent_gate = 250;
+    voice_gates[voice] = 3;
+  
+    if (velocity > 100) {
+      accent_gate = 250;
+    }
+  }
+
+  else if (voice == REGULAR_PIN_COUNT) {
+    digitalWrite(GU_SLOW_PIN, LOW);
+    digitalWrite(GU_STOP_PIN, LOW);
+  }
+  else if (voice == REGULAR_PIN_COUNT + 1) {
+    digitalWrite(GU_SLOW_PIN, HIGH);
+    digitalWrite(GU_STOP_PIN, LOW);
   }
 }
 
 void handleNoteOff(byte channel, byte pitch, byte velocity)
 {
-  if (pitch < 60 || pitch > 75) return;
-
   byte voice = pitch - 60;
 
-  byte voice_pin = voice_map[voice];
-
-  switch (voice_pin) {
+  if (voice >= 0 && voice < REGULAR_PIN_COUNT) { 
     
-    case TB_SHORT_PIN:
-    case TB_LONG_PIN:
-      tb_kill_gate = 5;
-      break;
-
-    case CY_PIN:
-    case HH_PIN:
-    case M_PIN:
-      cy_kill_gate = 5;
-      break;
+    byte voice_pin = voice_map[voice];
+  
+    switch (voice_pin) {
+      
+      case TB_SHORT_PIN:
+      case TB_LONG_PIN:
+        tb_kill_gate = 5;
+        break;
+  
+      case CY_PIN:
+      case HH_PIN:
+      case M_PIN:
+        cy_kill_gate = 5;
+        break;
+    }
   }
   
+  else if (voice == REGULAR_PIN_COUNT || voice == REGULAR_PIN_COUNT + 1) {
+    digitalWrite(GU_STOP_PIN, HIGH);
+  }
 }
 
 
@@ -83,7 +99,7 @@ int i;
 
 ISR(TIMER1_COMPA_vect) {
 
-  for (i=0; i<16; i++) {
+  for (i=0; i<14; i++) {
     byte voice_pin = voice_map[i];
     if (voice_gates[i] > 1) {
       digitalWrite(voice_pin, HIGH);
@@ -126,13 +142,17 @@ ISR(TIMER1_COMPA_vect) {
 void setup()
 {
   int j;
-  for (j = 0; j < 16; j++) {
+  for (j = 0; j < 14; j++) {
     pinMode(voice_map[j], OUTPUT);
   }
 
   pinMode(CY_KILL_PIN, OUTPUT);
   pinMode(TB_KILL_PIN, OUTPUT);
   pinMode(ACCENT_PIN, OUTPUT);
+
+  pinMode(GU_STOP_PIN, OUTPUT);
+  pinMode(GU_SLOW_PIN, OUTPUT);
+  digitalWrite(GU_STOP_PIN, HIGH);
 
   MIDI.setHandleNoteOn(handleNoteOn);
   MIDI.setHandleNoteOff(handleNoteOff);
