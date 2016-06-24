@@ -1,4 +1,5 @@
 #include <MIDI.h>
+#include "SoftwareSerialIn/SoftwareSerialIn.h"
 
 #define BD_PIN 1
 #define SD_PIN 11
@@ -35,11 +36,8 @@ byte voice_gates[] = {0, 0, 0, 0,
                     0, 0, 0, 0,
                     0, 0};
 
-byte cy_kill_gate = 0;
-byte tb_kill_gate = 0;
-byte accent_gate = 0;
-
-MIDI_CREATE_DEFAULT_INSTANCE();
+SoftwareSerialIn serialIn(0);
+MIDI_CREATE_INSTANCE(SoftwareSerialIn, serialIn, midiIn);
 
 
 
@@ -48,12 +46,28 @@ void handleNoteOn(byte channel, byte pitch, byte velocity)
   byte voice = pitch - 60;
 
   if (voice >= 0 && voice < REGULAR_PIN_COUNT) { 
-
-    voice_gates[voice] = 3;
   
     if (velocity > 100) {
-      accent_gate = 250;
+      digitalWrite(ACCENT_PIN, HIGH);
     }
+
+    byte voice_pin = voice_map[voice];
+  
+    switch (voice_pin) {
+      
+      case TB_SHORT_PIN:
+      case TB_LONG_PIN:
+        digitalWrite(TB_KILL_PIN, HIGH);
+        break;
+  
+      case CY_PIN:
+      case HH_PIN:
+      case M_PIN:
+        digitalWrite(CY_KILL_PIN, LOW);
+        break;
+    }
+
+    voice_gates[voice] = 8;
   }
 
   else if (voice == REGULAR_PIN_COUNT) {
@@ -78,13 +92,13 @@ void handleNoteOff(byte channel, byte pitch, byte velocity)
       
       case TB_SHORT_PIN:
       case TB_LONG_PIN:
-        tb_kill_gate = 5;
+        digitalWrite(TB_KILL_PIN, LOW);
         break;
   
       case CY_PIN:
       case HH_PIN:
       case M_PIN:
-        cy_kill_gate = 5;
+        digitalWrite(CY_KILL_PIN, HIGH);
         break;
     }
   }
@@ -99,7 +113,7 @@ int i;
 
 ISR(TIMER1_COMPA_vect) {
 
-  for (i=0; i<14; i++) {
+  for (i=0; i<REGULAR_PIN_COUNT; i++) {
     byte voice_pin = voice_map[i];
     if (voice_gates[i] > 1) {
       digitalWrite(voice_pin, HIGH);
@@ -108,31 +122,7 @@ ISR(TIMER1_COMPA_vect) {
       digitalWrite(voice_pin, LOW);
       voice_gates[i] = 0;
     }    
-  }
-
-    if (cy_kill_gate > 1) {
-      digitalWrite(CY_KILL_PIN, HIGH);
-      cy_kill_gate -= 1;
-    } else if (cy_kill_gate == 1) {
-      digitalWrite(CY_KILL_PIN, LOW);
-      cy_kill_gate = 0;
-    }    
-  
-    if (tb_kill_gate > 1) {
-      digitalWrite(TB_KILL_PIN, HIGH);
-      tb_kill_gate -= 1;
-    } else if (tb_kill_gate == 1) {
-      digitalWrite(TB_KILL_PIN, LOW);
-      tb_kill_gate = 0;
-    }    
- 
-    if (accent_gate > 1) {
-      digitalWrite(ACCENT_PIN, HIGH);
-      accent_gate -= 1;
-    } else if (accent_gate == 1) {
-      digitalWrite(ACCENT_PIN, LOW);
-      accent_gate = 0;
-    }    
+  }   
  
 }
 
@@ -142,45 +132,51 @@ ISR(TIMER1_COMPA_vect) {
 void setup()
 {
   int j;
-  for (j = 0; j < 14; j++) {
+  for (j = 0; j < REGULAR_PIN_COUNT; j++) {
     pinMode(voice_map[j], OUTPUT);
+    digitalWrite(voice_map[j], LOW);
   }
 
   pinMode(CY_KILL_PIN, OUTPUT);
+  digitalWrite(CY_KILL_PIN, HIGH);
+  
   pinMode(TB_KILL_PIN, OUTPUT);
+  digitalWrite(TB_KILL_PIN, HIGH);
+  
   pinMode(ACCENT_PIN, OUTPUT);
+  digitalWrite(ACCENT_PIN, LOW);
 
   pinMode(GU_STOP_PIN, OUTPUT);
   pinMode(GU_SLOW_PIN, OUTPUT);
   digitalWrite(GU_STOP_PIN, HIGH);
 
-  MIDI.setHandleNoteOn(handleNoteOn);
-  MIDI.setHandleNoteOff(handleNoteOff);
+  midiIn.setHandleNoteOn(handleNoteOn);
+  midiIn.setHandleNoteOff(handleNoteOff);
 
-    cli();//stop interrupts
+  cli();//stop interrupts
+  
+  //set timer1 interrupt at 1kHz
+  TCCR1A = 0;// set entire TCCR1A register to 0
+  TCCR1B = 0;// same for TCCR1B
+  TCNT1  = 0;//initialize counter value to 0;
+  // set timer count for 1khz increments
+  OCR1A = 1999;// = (16*10^6) / (1000*8) - 1
+  // turn on CTC mode
+  TCCR1B |= (1 << WGM12);
+  // Set CS11 bit for 8 prescaler
+  TCCR1B |= (1 << CS11);   
+  // enable timer compare interrupt
+  TIMSK1 |= (1 << OCIE1A);
+  
+  sei();//allow interrupts
     
-    //set timer1 interrupt at 1kHz
-    TCCR1A = 0;// set entire TCCR1A register to 0
-    TCCR1B = 0;// same for TCCR1B
-    TCNT1  = 0;//initialize counter value to 0;
-    // set timer count for 1khz increments
-    OCR1A = 1999;// = (16*10^6) / (1000*8) - 1
-    // turn on CTC mode
-    TCCR1B |= (1 << WGM12);
-    // Set CS11 bit for 8 prescaler
-    TCCR1B |= (1 << CS11);   
-    // enable timer compare interrupt
-    TIMSK1 |= (1 << OCIE1A);
     
-    sei();//allow interrupts
-    
-    
-    MIDI.begin(10);
-    MIDI.turnThruOff();
+  midiIn.begin(10);
+  midiIn.turnThruOff();
 }
 
 void loop()
 {
-  MIDI.read();
+  midiIn.read();
 }
 
