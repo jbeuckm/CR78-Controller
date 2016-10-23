@@ -1,5 +1,5 @@
 #include <MIDI.h>
-#include "SoftwareSerialIn/SoftwareSerialIn.h"
+#include <SoftwareSerialIn.h>
 
 #define BD_PIN 1
 #define SD_PIN 11
@@ -26,6 +26,8 @@
 
 #define REGULAR_PIN_COUNT 14
 
+#define BASE_MIDI_NOTE 60
+
 byte voice_map[] = {BD_PIN, SD_PIN, LB_PIN, HB_PIN, 
                   LC_PIN, RS_PIN, C_PIN, CB_PIN, 
                   TB_SHORT_PIN, TB_LONG_PIN, 
@@ -43,14 +45,16 @@ MIDI_CREATE_INSTANCE(SoftwareSerialIn, serialIn, midiIn);
 
 void handleNoteOn(byte channel, byte pitch, byte velocity)
 {
-  byte voice = pitch - 60;
+  byte voice = pitch - BASE_MIDI_NOTE;
 
   if (voice >= 0 && voice < REGULAR_PIN_COUNT) { 
   
-    if (velocity > 100) {
+    if (velocity >= 100) {
       digitalWrite(ACCENT_PIN, HIGH);
+    } else {
+      digitalWrite(ACCENT_PIN, LOW);
     }
-
+    
     byte voice_pin = voice_map[voice];
   
     switch (voice_pin) {
